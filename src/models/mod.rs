@@ -16,7 +16,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use std::collections::HashMap;
 
-use crate::ids::{AsIdentifier, DatabaseId, PageId};
+use crate::ids::{AsIdentifier, BlockId, DatabaseId, PageId};
 use crate::models::block::{Block, CreateBlock, FileObject};
 use crate::models::error::ErrorResponse;
 use crate::models::paging::PagingCursor;
@@ -199,6 +199,13 @@ impl Properties {
             _ => None,
         })
     }
+}
+
+#[derive(Serialize, Debug, Eq, PartialEq)]
+pub struct BlockAppendChildrenRequest {
+    pub children: Vec<CreateBlock>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub after: Option<BlockId>,
 }
 
 #[derive(Serialize, Debug, Eq, PartialEq)]
