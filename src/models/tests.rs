@@ -86,8 +86,9 @@ fn rich_text_mention_user_person() {
           person: Person {
             email: "john.doe@gmail.com".to_string()
           },
-        }
-      },
+        },
+    },
+    href: None,
     }
   )
 }
@@ -118,6 +119,7 @@ fn rich_text_mention_date() {
                     time_zone: None,
                 }
             },
+            href: None,
         }
     )
 }
@@ -148,8 +150,9 @@ fn rich_text_mention_date_with_time() {
                     ),
                     end: None,
                     time_zone: None,
-                }
+                },
             },
+            href: None,
         }
     )
 }
@@ -182,6 +185,7 @@ fn rich_text_mention_date_with_end() {
                     time_zone: None,
                 }
             },
+            href: None,
         }
     )
 }
@@ -219,6 +223,7 @@ fn rich_text_mention_date_with_end_and_time() {
                     time_zone: None,
                 }
             },
+            href: None,
         }
     )
 }
@@ -245,7 +250,8 @@ fn rich_text_mention_page() {
                 page: MentionId {
                     id: PageId::from_str("c81ee776-2752-4e98-aa66-c37bd4ba9b8d").unwrap()
                 }
-            }
+            },
+            href: Some("https://www.notion.so/c81ee77627524e98aa66c37bd4ba9b8d".to_string()),
         }
     );
 }
@@ -274,6 +280,7 @@ fn rich_text_mention_database() {
                     id: DatabaseId::from_str("baa9d745-9325-4088-a992-721dc2fa21dd").unwrap()
                 }
             },
+            href: Some("https://www.notion.so/baa9d74593254088a992721dc2fa21dd".to_string())
         }
     );
 }
