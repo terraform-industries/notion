@@ -11,7 +11,7 @@ use tracing::Instrument;
 
 pub mod ids;
 pub mod models;
-
+pub mod query;
 pub use chrono;
 
 const NOTION_API_VERSION: &str = "2022-02-22";
