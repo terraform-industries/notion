@@ -2,8 +2,10 @@ use crate::ids::{BlockId, DatabaseId};
 use crate::models::error::ErrorResponse;
 use crate::models::search::{DatabaseQuery, SearchRequest};
 use crate::models::{Database, ListResponse, Object, Page};
+use crate::query::QueryParams;
 use ids::{AsIdentifier, PageId};
 use models::block::Block;
+use models::search::BlockChildrenQuery;
 use models::PageCreateRequest;
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::{header, Client, ClientBuilder, RequestBuilder};
@@ -225,14 +227,27 @@ impl NotionApi {
         }
     }
 
-    pub async fn get_block_children<T: AsIdentifier<BlockId>>(
+    pub async fn get_block_children<B, T>(
         &self,
-        block_id: T,
-    ) -> Result<ListResponse<Block>, Error> {
+        block_id: B,
+        query: T,
+    ) -> Result<ListResponse<Block>, Error>
+    where
+        B: AsIdentifier<BlockId>,
+        T: Into<BlockChildrenQuery>,
+    {
+        let query: BlockChildrenQuery = query.into();
+        let query_string = query.to_query_string();
+        let query_string = if query_string.len() == 0 {
+            "".to_string()
+        } else {
+            format!("?{}", query_string)
+        };
         let result = self
             .make_json_request(self.client.get(&format!(
-                "https://api.notion.com/v1/blocks/{block_id}/children",
-                block_id = block_id.as_id()
+                "https://api.notion.com/v1/blocks/{block_id}/children{query}",
+                block_id = block_id.as_id(),
+                query = query_string
             )))
             .await?;
 
