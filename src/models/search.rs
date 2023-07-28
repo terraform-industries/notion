@@ -1,6 +1,7 @@
 use crate::ids::{PageId, UserId};
 use crate::models::paging::{Pageable, Paging, PagingCursor};
 use crate::models::Number;
+use crate::query::QueryParams;
 use chrono::{DateTime, Utc};
 use serde::ser::SerializeMap;
 use serde::{Serialize, Serializer};
@@ -315,6 +316,21 @@ impl Pageable for DatabaseQuery {
             }),
             ..self
         }
+    }
+}
+
+#[derive(Debug, Eq, PartialEq)]
+pub struct BlockChildrenQuery {
+    pub paging: Option<Paging>,
+}
+
+impl QueryParams for BlockChildrenQuery {
+    fn to_query_string(&self) -> String {
+        let mut query = String::new();
+        if let Some(paging) = &self.paging {
+            query.push_str(&paging.to_query_string());
+        }
+        query
     }
 }
 
