@@ -6,7 +6,7 @@ use crate::query::QueryParams;
 use ids::{AsIdentifier, PageId};
 use models::block::Block;
 use models::search::BlockChildrenQuery;
-use models::{BlockAppendChildrenRequest, PageCreateRequest};
+use models::{BlockAppendChildrenRequest, DatabaseCreateRequest, PageCreateRequest};
 use reqwest::header::{HeaderMap, HeaderValue};
 use reqwest::{header, Client, ClientBuilder, RequestBuilder};
 use tracing::Instrument;
@@ -280,6 +280,28 @@ impl NotionApi {
 
         match result {
             Object::List { list } => Ok(list.expect_blocks()?),
+            response => Err(Error::UnexpectedResponse { response }),
+        }
+    }
+
+    pub async fn create_database<T>(
+        &self,
+        query: T,
+    ) -> Result<Database, Error>
+    where
+        T: Into<DatabaseCreateRequest>,
+    {
+        let query: DatabaseCreateRequest = query.into();
+        let result = self
+            .make_json_request(
+                self.client
+                    .post("https://api.notion.com/v1/databases")
+                    .json(&query),
+            )
+            .await?;
+
+        match result {
+            Object::Database { database } => Ok(database),
             response => Err(Error::UnexpectedResponse { response }),
         }
     }

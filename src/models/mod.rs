@@ -2,6 +2,7 @@ pub mod block;
 pub mod error;
 pub mod paging;
 pub mod properties;
+pub mod property_schema;
 pub mod search;
 #[cfg(test)]
 mod tests;
@@ -23,6 +24,8 @@ use crate::models::paging::PagingCursor;
 use crate::models::users::User;
 pub use chrono::{DateTime, Utc};
 pub use serde_json::value::Number;
+
+use self::property_schema::PropertySchema;
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Copy, Clone)]
 #[serde(rename_all = "snake_case")]
@@ -239,6 +242,14 @@ impl AsIdentifier<PageId> for Page {
     fn as_id(&self) -> &PageId {
         &self.id
     }
+}
+
+#[derive(Serialize, Debug, Eq, PartialEq)]
+pub struct DatabaseCreateRequest {
+    pub parent: Parent,
+    pub properties: HashMap<String, PropertySchema>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub title: Option<Vec<RichText>>,
 }
 
 #[derive(Eq, Serialize, Deserialize, Clone, Debug, PartialEq)]
