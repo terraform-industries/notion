@@ -155,14 +155,13 @@ impl ListResponse<Object> {
 #[serde(rename_all = "snake_case")]
 pub enum Parent {
     #[serde(rename = "database_id")]
-    Database {
-        database_id: DatabaseId,
-    },
+    Database { database_id: DatabaseId },
     #[serde(rename = "page_id")]
-    Page {
-        page_id: PageId,
+    Page { page_id: PageId },
+    Workspace {
+        /// Always `true`
+        workspace: bool,
     },
-    Workspace,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
