@@ -5,7 +5,8 @@
   "last_edited_time": "2020-03-17T21:49:37.913Z",
   "archived": false,
   "parent": {
-    "type": "workspace"
+    "type": "workspace",
+    "workspace": true
   },
   "properties": {
     "Name": {
