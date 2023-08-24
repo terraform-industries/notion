@@ -199,6 +199,7 @@ pub struct TableOfContents {
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct ColumnListFields {
+    #[serde(default)]
     pub children: Vec<Block>,
 }
 
