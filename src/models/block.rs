@@ -199,13 +199,14 @@ pub struct TableOfContents {
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct ColumnListFields {
-    #[serde(default)]
-    pub children: Vec<Block>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub children: Option<Vec<Block>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct ColumnFields {
-    pub children: Vec<Block>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub children: Option<Vec<Block>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
