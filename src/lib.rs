@@ -104,8 +104,10 @@ impl NotionApi {
             dbg!(serde_json::from_str::<serde_json::Value>(&json)
                 .map_err(|source| Error::JsonParseError { source })?);
         }
-        let result =
-            serde_json::from_str(&json).map_err(|source| Error::JsonParseError { source })?;
+        let result = serde_json::from_str(&json).map_err(|source| {
+            tracing::error!("Error parsing json response: {}", json);
+            Error::JsonParseError { source }
+        })?;
 
         match result {
             Object::Error { error } => Err(Error::ApiError { error }),

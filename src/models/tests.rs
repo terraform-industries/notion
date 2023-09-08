@@ -6,6 +6,7 @@ use crate::models::text::{
 use crate::models::users::{Person, User, UserCommon};
 use crate::models::{ListResponse, Object, Page};
 use chrono::{DateTime, NaiveDate};
+use monostate::MustBe;
 use std::str::FromStr;
 
 #[test]
@@ -83,9 +84,10 @@ fn rich_text_mention_user_person() {
                 .to_string()
             ),
           },
-          person: Person {
-            email: "john.doe@gmail.com".to_string()
-          },
+          person: Some(Person {
+            email: Some("john.doe@gmail.com".to_string())
+          }),
+          r#type: Some(MustBe!("person")),
         },
     },
     href: None,

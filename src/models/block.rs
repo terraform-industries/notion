@@ -612,3 +612,90 @@ pub enum CreateBlock {
     #[serde(other)]
     Unknown,
 }
+
+#[cfg(test)]
+mod test {
+    use crate::models::Object;
+
+    #[test]
+    fn test_parse() {
+        let str = r#"{
+            "object": "list",
+            "results": [
+              {
+                "object": "block",
+                "id": "e1a53a2f-fb3b-4cd8-b00f-a544200e02d1",
+                "parent": {
+                  "type": "block_id",
+                  "block_id": "0298098c-aa5b-48e9-beac-2713bf37a3fb"
+                },
+                "created_time": "2023-09-08T11:16:00.000Z",
+                "last_edited_time": "2023-09-08T11:16:00.000Z",
+                "created_by": {
+                  "object": "user",
+                  "id": "f671d076-6b19-4f43-860e-595732e7fef9"
+                },
+                "last_edited_by": {
+                  "object": "user",
+                  "id": "f671d076-6b19-4f43-860e-595732e7fef9"
+                },
+                "has_children": false,
+                "archived": false,
+                "type": "paragraph",
+                "paragraph": {
+                  "rich_text": [
+                    {
+                      "type": "mention",
+                      "mention": {
+                        "type": "user",
+                        "user": {
+                          "object": "user",
+                          "id": "e0ae623a-7fa8-42c2-a937-26067810c117"
+                        }
+                      },
+                      "annotations": {
+                        "bold": false,
+                        "italic": false,
+                        "strikethrough": false,
+                        "underline": false,
+                        "code": false,
+                        "color": "default"
+                      },
+                      "plain_text": "@Anonymous",
+                      "href": null
+                    },
+                    {
+                      "type": "text",
+                      "text": {
+                        "content": " tagging you so you know. Should be pretty easy to make one, like… 2x the length? they are now around 5m I’d guess?\nWhen building a 6m wall like right now, this cable length means that foreman needs to be in a very specific place which might not be possible. (bc cables to laptops etc might be too short for that or bc of building site mess)",
+                        "link": null
+                      },
+                      "annotations": {
+                        "bold": false,
+                        "italic": false,
+                        "strikethrough": false,
+                        "underline": false,
+                        "code": false,
+                        "color": "default"
+                      },
+                      "plain_text": " tagging you so you know. Should be pretty easy to make one, like… 2x the length? they are now around 5m I’d guess?\nWhen building a 6m wall like right now, this cable length means that foreman needs to be in a very specific place which might not be possible. (bc cables to laptops etc might be too short for that or bc of building site mess)",
+                      "href": null
+                    }
+                  ],
+                  "color": "yellow_background"
+                }
+              }
+            ],
+            "next_cursor": null,
+            "has_more": false,
+            "type": "block",
+            "block": {}
+          }"#;
+
+        let result = serde_json::from_str::<Object>(str);
+
+        println!("{:#?}", result);
+
+        result.unwrap();
+    }
+}
