@@ -60,7 +60,7 @@ pub async fn configure(notion_api: NotionApi) -> Result<()> {
 
     println!("Selected database's id: {}", database_id);
 
-    let bytes = toml::to_vec(&TodoConfig {
+    let bytes = toml::to_string(&TodoConfig {
         api_token: None,
         task_database_id: Some(database_id),
     })?;
