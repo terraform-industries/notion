@@ -2,6 +2,7 @@ mod commands;
 
 use anyhow::{Context, Result};
 use clap::Parser;
+use config::Config;
 use notion::ids::DatabaseId;
 use notion::NotionApi;
 use serde::{Deserialize, Serialize};
@@ -37,12 +38,12 @@ async fn main() -> Result<()> {
     let opts: Opts = Opts::parse();
 
     // https://docs.rs/config/0.11.0/config/
-    let config = config::Config::default()
-        .with_merged(config::File::with_name("todo_config"))
-        .unwrap_or_default()
-        .with_merged(config::Environment::with_prefix("NOTION"))?;
+    let config = Config::builder()
+        .add_source(config::File::with_name("todo_config"))
+        .add_source(config::Environment::with_prefix("NOTION"))
+        .build()?;
 
-    let config: TodoConfig = config.try_into().context("Failed to read config")?;
+    let config: TodoConfig = config.try_deserialize().context("Failed to read config")?;
 
     let notion_api = NotionApi::new(
         std::env::var("NOTION_API_TOKEN")
