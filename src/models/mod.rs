@@ -210,6 +210,8 @@ pub struct Page {
     pub archived: bool,
     pub properties: Properties,
     pub parent: Parent,
+    pub url: String,
+    pub public_url: Option<String>,
 }
 
 impl Page {
