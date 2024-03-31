@@ -230,6 +230,8 @@ pub struct Page {
     pub properties: Properties,
     pub icon: Option<IconObject>,
     pub parent: Parent,
+    pub url: String,
+    pub public_url: Option<String>,
 }
 
 impl Page {
