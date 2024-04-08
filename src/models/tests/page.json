@@ -54,6 +54,27 @@
           }
         }
       ]
+    },
+    "File": {
+      "type": "files",
+      "id": "some-property-id3",
+      "files": [
+        {
+          "name": "some-file-name",
+          "type": "file",
+          "file": {
+            "url": "https://www.notion.so/some-file-url",
+            "expiry_time": "2020-03-17T19:10:04.968Z"
+          }
+        },
+        {
+          "name": "some-other-file-name",
+          "type": "external",
+          "external": {
+            "url": "https://www.notion.so/some-other-file-url"
+          }
+        }
+      ]
     }
   },
   "url": "https://www.notion.so/Some-Page-b55c9c91384d452b81dbd1ef79372b75"
