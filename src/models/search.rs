@@ -1,4 +1,4 @@
-use crate::ids::{PageId, UserId};
+use crate::ids::{PageId, PropertyId, UserId};
 use crate::models::paging::{Pageable, Paging, PagingCursor};
 use crate::models::Number;
 use crate::query::QueryParams;
@@ -302,6 +302,8 @@ pub struct DatabaseQuery {
     pub filter: Option<FilterCondition>,
     #[serde(flatten)]
     pub paging: Option<Paging>,
+    #[serde(skip_serializing)]
+    pub filter_properties: Vec<PropertyId>,
 }
 
 impl Pageable for DatabaseQuery {

@@ -4,6 +4,7 @@ use crate::models::search::{DatabaseQuery, SearchRequest};
 use crate::models::{Database, ListResponse, Object, Page};
 use crate::query::QueryParams;
 use ids::{AsIdentifier, PageId};
+use itertools::Itertools;
 use models::block::Block;
 use models::search::BlockChildrenQuery;
 use models::{BlockAppendChildrenRequest, DatabaseCreateRequest, PageCreateRequest};
@@ -15,6 +16,7 @@ pub mod ids;
 pub mod models;
 pub mod query;
 pub use chrono;
+use urlencoding::encode;
 
 const NOTION_API_VERSION: &str = "2022-02-22";
 
@@ -44,6 +46,12 @@ pub enum Error {
 
     #[error("API Error {}({}): {}", .error.code, .error.status, .error.message)]
     ApiError { error: ErrorResponse },
+
+    #[error("Internal error: {}", source)]
+    InternalError {
+        description: String,
+        source: Box<dyn std::error::Error + Send + Sync>,
+    },
 }
 
 /// An API client for Notion.
@@ -213,14 +221,28 @@ impl NotionApi {
         T: Into<DatabaseQuery>,
         D: AsIdentifier<DatabaseId>,
     {
+        let query: DatabaseQuery = query.into();
+
+        let query_params = query
+            .filter_properties
+            .iter()
+            .map(|p| format!("filter_properties={}", encode(&p.to_string())))
+            .join("&");
+        let query_params = if query_params.len() == 0 {
+            "".to_string()
+        } else {
+            format!("?{}", query_params)
+        };
+
         let result = self
             .make_json_request(
                 self.client
                     .post(&format!(
-                        "https://api.notion.com/v1/databases/{database_id}/query",
-                        database_id = database.as_id()
+                        "https://api.notion.com/v1/databases/{database_id}/query{query_params}",
+                        database_id = database.as_id(),
+                        query_params = query_params
                     ))
-                    .json(&query.into()),
+                    .json(&query),
             )
             .await?;
         match result {
