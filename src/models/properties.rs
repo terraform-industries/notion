@@ -272,8 +272,28 @@ pub enum RollupValue {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct FileReference {
     pub name: String,
+    #[serde(flatten)]
+    pub object: FileObject,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(tag = "type", rename_all = "snake_case")]
+pub enum FileObject {
+    File { file: FileFile },
+    External { external: FileExternal },
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(rename_all = "snake_case")]
+pub struct FileFile {
     pub url: String,
-    pub mime_type: String,
+    pub expiry_time: DateTime<Utc>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(rename_all = "snake_case")]
+pub struct FileExternal {
+    pub url: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
