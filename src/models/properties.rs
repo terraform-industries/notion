@@ -266,6 +266,9 @@ pub enum PropertyConfiguration {
         id: PropertyId,
         unique_id: UniqueId,
     },
+    Button {
+        id: PropertyId,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
@@ -410,16 +413,25 @@ pub enum PropertyValue {
         rollup: Option<RollupValue>,
     },
     /// <https://developers.notion.com/reference/property-object#people-configuration>
-    People { id: PropertyId, people: Vec<User> },
+    People {
+        id: PropertyId,
+        people: Vec<User>,
+    },
     /// <https://developers.notion.com/reference/property-object#files-configuration>
     Files {
         id: PropertyId,
         files: Option<Vec<FileReference>>,
     },
     /// <https://developers.notion.com/reference/property-object#checkbox-configuration>
-    Checkbox { id: PropertyId, checkbox: bool },
+    Checkbox {
+        id: PropertyId,
+        checkbox: bool,
+    },
     /// <https://developers.notion.com/reference/property-object#url-configuration>
-    Url { id: PropertyId, url: Option<String> },
+    Url {
+        id: PropertyId,
+        url: Option<String>,
+    },
     /// <https://developers.notion.com/reference/property-object#email-configuration>
     Email {
         id: PropertyId,
@@ -436,7 +448,10 @@ pub enum PropertyValue {
         created_time: DateTime<Utc>,
     },
     /// <https://developers.notion.com/reference/property-object#created-by-configuration>
-    CreatedBy { id: PropertyId, created_by: User },
+    CreatedBy {
+        id: PropertyId,
+        created_by: User,
+    },
     /// <https://developers.notion.com/reference/property-object#last-edited-time-configuration>
     LastEditedTime {
         id: PropertyId,
@@ -450,6 +465,9 @@ pub enum PropertyValue {
     UniqueId {
         id: PropertyId,
         unique_id: UniqueIdValue,
+    },
+    Button {
+        id: PropertyId,
     },
 }
 
@@ -526,4 +544,5 @@ pub enum RollupPropertyValue {
     UniqueId {
         unique_id: UniqueIdValue,
     },
+    Button {},
 }
