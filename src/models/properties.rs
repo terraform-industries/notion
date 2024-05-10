@@ -259,7 +259,7 @@ pub enum PropertyConfiguration {
         id: PropertyId,
     },
     /// See <https://developers.notion.com/reference/database#last-edited-by-configuration>
-    LastEditBy {
+    LastEditedBy {
         id: PropertyId,
     },
     UniqueId {
