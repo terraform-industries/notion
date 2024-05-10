@@ -544,4 +544,5 @@ pub enum RollupPropertyValue {
     UniqueId {
         unique_id: UniqueIdValue,
     },
+    Button {},
 }

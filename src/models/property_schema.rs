@@ -47,6 +47,7 @@ pub enum PropertySchema {
     LastEditedTime {},
     LastEditedBy {},
     UniqueId {},
+    Button {},
 }
 
 #[derive(Eq, Serialize, Deserialize, Clone, Debug, PartialEq)]
