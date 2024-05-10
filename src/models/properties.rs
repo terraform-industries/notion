@@ -151,6 +151,11 @@ pub struct Rollup {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+pub struct UniqueId {
+    pub prefix: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum PropertyConfiguration {
@@ -259,6 +264,7 @@ pub enum PropertyConfiguration {
     },
     UniqueId {
         id: PropertyId,
+        unique_id: UniqueId,
     },
     Button {
         id: PropertyId,
@@ -341,6 +347,13 @@ pub struct FileFile {
 #[serde(rename_all = "snake_case")]
 pub struct FileExternal {
     pub url: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+#[serde(rename_all = "snake_case")]
+pub struct UniqueIdValue {
+    pub prefix: Option<String>,
+    pub number: Option<u64>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
@@ -451,17 +464,11 @@ pub enum PropertyValue {
     },
     UniqueId {
         id: PropertyId,
-        unique_id: UniqueidValue,
+        unique_id: UniqueIdValue,
     },
     Button {
         id: PropertyId,
     },
-}
-
-#[derive(Clone, Debug, Eq, PartialEq, Serialize, Deserialize)]
-pub struct UniqueidValue {
-    pub prefix: Option<String>,
-    pub number: u32,
 }
 
 /// <https://developers.notion.com/reference/page#rollup-property-value-element>
@@ -533,5 +540,8 @@ pub enum RollupPropertyValue {
     },
     LastEditedBy {
         last_edited_by: User,
+    },
+    UniqueId {
+        unique_id: UniqueIdValue,
     },
 }
