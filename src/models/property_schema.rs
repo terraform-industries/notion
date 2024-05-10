@@ -46,6 +46,7 @@ pub enum PropertySchema {
     CreatedBy {},
     LastEditedTime {},
     LastEditedBy {},
+    UniqueId {},
 }
 
 #[derive(Eq, Serialize, Deserialize, Clone, Debug, PartialEq)]
@@ -80,6 +81,11 @@ pub enum RollupFunction {
     Max,
     Range,
     ShowOriginal,
+}
+
+#[derive(Eq, Serialize, Deserialize, Clone, Debug, PartialEq)]
+pub struct UniqueIdSchema {
+    prefix: Option<String>,
 }
 
 #[cfg(test)]
