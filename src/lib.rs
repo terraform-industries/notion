@@ -16,7 +16,6 @@ pub mod ids;
 pub mod models;
 pub mod query;
 pub use chrono;
-use urlencoding::encode;
 
 const NOTION_API_VERSION: &str = "2022-02-22";
 
@@ -226,7 +225,7 @@ impl NotionApi {
         let query_params = query
             .filter_properties
             .iter()
-            .map(|p| format!("filter_properties={}", encode(&p.to_string())))
+            .map(|p| format!("filter_properties={}", &p.to_string()))
             .join("&");
         let query_params = if query_params.len() == 0 {
             "".to_string()
