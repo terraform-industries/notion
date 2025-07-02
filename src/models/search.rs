@@ -188,6 +188,47 @@ pub enum DateCondition {
     NextYear,
 }
 
+/// Timestamp condition for filtering by created_time or last_edited_time.
+/// This uses the same conditions as DateCondition but is serialized differently 
+/// for timestamp filters.
+#[derive(Debug, Eq, PartialEq, Clone)]
+pub enum TimestampCondition {
+    /// Filter by created_time timestamp
+    CreatedTime(DateCondition),
+    /// Filter by last_edited_time timestamp
+    LastEditedTime(DateCondition),
+}
+
+impl Serialize for TimestampCondition {
+    fn serialize<S>(&self, serializer: S) -> Result<S::Ok, S::Error>
+    where
+        S: Serializer,
+    {
+        let mut map = serializer.serialize_map(Some(1))?;
+        match self {
+            TimestampCondition::CreatedTime(condition) => {
+                map.serialize_entry("created_time", condition)?;
+            }
+            TimestampCondition::LastEditedTime(condition) => {
+                map.serialize_entry("last_edited_time", condition)?;
+            }
+        }
+        map.end()
+    }
+}
+
+impl TimestampCondition {
+    /// Create a TimestampCondition for created_time with the given date condition
+    pub fn created_time(condition: DateCondition) -> Self {
+        Self::CreatedTime(condition)
+    }
+    
+    /// Create a TimestampCondition for last_edited_time with the given date condition
+    pub fn last_edited_time(condition: DateCondition) -> Self {
+        Self::LastEditedTime(condition)
+    }
+}
+
 #[derive(Serialize, Debug, Eq, PartialEq, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum PeopleCondition {
@@ -267,6 +308,13 @@ pub enum FilterCondition {
         property: String,
         #[serde(flatten)]
         condition: PropertyCondition,
+    },
+    /// Filter by page timestamps (created_time or last_edited_time).
+    /// This allows filtering by timestamps even if the database doesn't have explicit timestamp properties.
+    Timestamp {
+        timestamp: DatabaseSortTimestamp,
+        #[serde(flatten)]
+        condition: TimestampCondition,
     },
     /// Returns pages when **all** of the filters inside the provided vector match.
     And { and: Vec<FilterCondition> },
