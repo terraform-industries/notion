@@ -14,7 +14,6 @@ use crate::models::text::RichText;
 use crate::Error;
 use block::ExternalFileObject;
 use serde::{Deserialize, Serialize};
-use serde_json::Value;
 use std::collections::HashMap;
 
 use crate::ids::{AsIdentifier, BlockId, DatabaseId, PageId};
@@ -94,6 +93,16 @@ pub struct ListResponse<T> {
     pub results: Vec<T>,
     pub next_cursor: Option<PagingCursor>,
     pub has_more: bool,
+    /// Type of response for query/search results
+    #[serde(rename = "type")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub response_type: Option<String>,
+    /// Additional metadata for page_or_database queries
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub page_or_database: Option<serde_json::Value>,
+    /// Request identifier for debugging
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub request_id: Option<String>,
 }
 
 impl<T> ListResponse<T> {
@@ -117,6 +126,9 @@ impl ListResponse<Object> {
             results: databases,
             has_more: self.has_more,
             next_cursor: self.next_cursor,
+            response_type: self.response_type,
+            page_or_database: self.page_or_database,
+            request_id: self.request_id,
         }
     }
 
@@ -134,6 +146,9 @@ impl ListResponse<Object> {
             results: databases?,
             has_more: self.has_more,
             next_cursor: self.next_cursor,
+            response_type: self.response_type,
+            page_or_database: self.page_or_database,
+            request_id: self.request_id,
         })
     }
 
@@ -151,6 +166,9 @@ impl ListResponse<Object> {
             results: items?,
             has_more: self.has_more,
             next_cursor: self.next_cursor,
+            response_type: self.response_type,
+            page_or_database: self.page_or_database,
+            request_id: self.request_id,
         })
     }
 
@@ -168,6 +186,9 @@ impl ListResponse<Object> {
             results: items?,
             has_more: self.has_more,
             next_cursor: self.next_cursor,
+            response_type: self.response_type,
+            page_or_database: self.page_or_database,
+            request_id: self.request_id,
         })
     }
 }
@@ -225,8 +246,20 @@ pub struct Page {
     pub created_time: DateTime<Utc>,
     /// Date and time when this page was updated.
     pub last_edited_time: DateTime<Utc>,
+    /// User who created the page.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub created_by: Option<User>,
+    /// User who last edited the page.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub last_edited_by: Option<User>,
+    /// Cover image for the page.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub cover: Option<IconObject>,
     /// The archived status of the page.
     pub archived: bool,
+    /// Whether the page is in trash.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub in_trash: Option<bool>,
     pub properties: Properties,
     pub icon: Option<IconObject>,
     pub parent: Parent,
