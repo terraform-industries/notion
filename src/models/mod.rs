@@ -17,7 +17,7 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 use crate::ids::{AsIdentifier, BlockId, DatabaseId, PageId};
-use crate::models::block::{Block, CreateBlock, FileObject};
+use crate::models::block::{Block, CreateBlock};
 use crate::models::error::ErrorResponse;
 use crate::models::paging::PagingCursor;
 use crate::models::users::User;
@@ -57,12 +57,17 @@ pub struct Database {
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
+pub struct InternalFileDetails {
+    pub url: String,
+    pub expiry_time: DateTime<Utc>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum IconObject {
     File {
-        #[serde(flatten)]
-        file: FileObject,
+        file: InternalFileDetails,
     },
     External {
         external: ExternalFileObject,
