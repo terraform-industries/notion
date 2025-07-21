@@ -476,6 +476,10 @@ pub enum PropertyValue {
 #[serde(tag = "type")]
 #[serde(rename_all = "snake_case")]
 pub enum RollupPropertyValue {
+    /// <https://developers.notion.com/reference/page-property-values#title>
+    Title {
+        title: Vec<RichText>,
+    },
     /// <https://developers.notion.com/reference/page#rich-text-property-values>
     #[serde(rename = "rich_text")]
     Text {
