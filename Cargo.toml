@@ -23,6 +23,7 @@ features = ["serde", "clock"]
 
 [dependencies.reqwest]
 version = "0.12"
+default-features = false
 features = ["json"]
 
 [dependencies.tokio]
