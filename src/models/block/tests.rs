@@ -293,4 +293,24 @@ mod tests {
             }
         )
     }
+
+    #[test]
+    fn child_database() {
+        let block: Block =
+            serde_json::from_str(include_str!("tests/child_database.json")).unwrap();
+        match block {
+            Block::ChildDatabase {
+                common,
+                child_database,
+            } => {
+                assert_eq!(child_database.title, "Calibration log");
+                assert!(!common.has_children);
+                assert_eq!(
+                    common.id,
+                    BlockId::from_str("2dfa73e6-6a5b-80a8-b6e4-e2703020a4b0").unwrap()
+                );
+            }
+            other => panic!("Expected ChildDatabase, got {:?}", other),
+        }
+    }
 }

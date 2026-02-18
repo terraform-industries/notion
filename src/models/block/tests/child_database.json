@@ -1,0 +1,25 @@
+{
+  "object": "block",
+  "id": "2dfa73e6-6a5b-80a8-b6e4-e2703020a4b0",
+  "parent": {
+    "type": "page_id",
+    "page_id": "2dfa73e6-6a5b-80e1-949d-f6a985865cb7"
+  },
+  "created_time": "2026-01-05T08:55:00.000Z",
+  "last_edited_time": "2026-02-11T13:25:00.000Z",
+  "created_by": {
+    "object": "user",
+    "id": "268d872b-594c-81cd-ba8b-00027656795c"
+  },
+  "last_edited_by": {
+    "object": "user",
+    "id": "22fd872b-594c-810a-ae28-0002f236c6f9"
+  },
+  "has_children": false,
+  "archived": false,
+  "in_trash": false,
+  "type": "child_database",
+  "child_database": {
+    "title": "Calibration log"
+  }
+}
