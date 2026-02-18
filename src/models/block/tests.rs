@@ -313,4 +313,28 @@ mod tests {
             other => panic!("Expected ChildDatabase, got {:?}", other),
         }
     }
+
+    #[test]
+    fn table_without_children() {
+        let obj: Object =
+            serde_json::from_str(include_str!("tests/table.json")).unwrap();
+        match obj {
+            Object::List { list } => {
+                assert_eq!(list.results.len(), 3);
+                match &list.results[1] {
+                    Object::Block {
+                        block: Block::Table { common, table },
+                    } => {
+                        assert_eq!(table.table_width, 3);
+                        assert!(!table.has_column_header);
+                        assert!(!table.has_row_header);
+                        assert!(table.children.is_none());
+                        assert!(common.has_children);
+                    }
+                    other => panic!("Expected Table block, got {:?}", other),
+                }
+            }
+            other => panic!("Expected List, got {:?}", other),
+        }
+    }
 }

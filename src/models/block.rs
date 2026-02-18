@@ -244,12 +244,13 @@ pub struct TableFields {
     pub table_width: u64,
     pub has_column_header: bool,
     pub has_row_header: bool,
-    pub children: Vec<Block>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub children: Option<Vec<Block>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct TableRowFields {
-    pub cells: Vec<RichText>,
+    pub cells: Vec<Vec<RichText>>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
