@@ -217,6 +217,7 @@ pub struct LinkPreviewFields {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct TemplateFields {
     pub rich_text: Vec<RichText>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
@@ -236,6 +237,7 @@ pub struct SyncedFromObject {
 #[derive(Serialize, Deserialize, Debug, Eq, PartialEq, Clone)]
 pub struct SyncedBlockFields {
     pub synced_from: Option<SyncedFromObject>,
+    #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub children: Vec<Block>,
 }
 
